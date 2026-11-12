@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../config.dart';
 import '../state/app_state.dart';
 import 'cloud_setup_screen.dart';
 import 'glass.dart';
@@ -105,14 +106,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Text('Tools & settings', style: display(24, color: p.ink)),
                   ]),
                   const SizedBox(height: 18),
-                  _hero(p),
+                  if (kShowSync) _hero(p),
                   _section(p, 'Your data'),
                   _group(p, [
                     _row(p,
                         icon: Icons.ios_share_rounded,
                         title: 'Save a backup file',
                         subtitle: s.lastExport == null
-                            ? 'Entries as CSV, groups as JSON. Keep it anywhere.'
+                            ? 'Your entries as a CSV file. Keep it anywhere.'
                             : 'Last saved ${s.lastExport!.toString().substring(0, 10)}',
                         onTap: () => shareBackup(s)),
                     _row(p,
@@ -126,6 +127,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         subtitle: 'Spending, who owes you, last 14 days.',
                         onTap: () => Navigator.push(
                             context, MaterialPageRoute<void>(builder: (_) => SummaryScreen(state: s)))),
+                    if (kShowGroups)
                     _row(p,
                         icon: Icons.groups_rounded,
                         title: 'Groups',
@@ -188,12 +190,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ]),
                   _section(p, 'About'),
                   _group(p, [
+                    if (kShowSync)
                     _row(p,
                         icon: Icons.tune_rounded,
                         title: 'Developer setup',
                         subtitle: 'Google & Firebase values used for sign-in.',
                         onTap: _openSetup),
-                    _row(p, icon: Icons.info_outline_rounded, title: 'Spendline', subtitle: 'Say it. It is logged.  ·  v1.0.0'),
+                    _row(p, icon: Icons.info_outline_rounded, title: 'Spendline', subtitle: 'Say it. It is logged.  ·  v1.0.1'),
                   ]),
                 ]),
               ),

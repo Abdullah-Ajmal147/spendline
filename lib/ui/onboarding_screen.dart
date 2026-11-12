@@ -176,8 +176,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final s = widget.state;
     return _frame(
       p,
-      title: 'Yours, and everywhere',
-      body_: 'Split trips with friends, see who owes you, and keep a backup in your own Google account.',
+      title: 'Yours, and private',
+      body_: 'See who owes you, search and filter anything, and save a backup file whenever you like.',
       child: Glass(
         radius: 26,
         padding: const EdgeInsets.all(16),

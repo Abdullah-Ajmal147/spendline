@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../config.dart';
 import '../models/entry.dart';
 import '../models/filter.dart';
 import '../services/parser.dart';
@@ -250,12 +251,14 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   ]),
                 ),
               ))),
-              const SizedBox(width: 8),
-              Press(
-                onTap: () => Navigator.push(context, MaterialPageRoute<void>(builder: (_) => GroupsScreen(state: s))),
-                label: 'Groups',
-                child: Glass(radius: 999, padding: const EdgeInsets.all(9), child: Icon(Icons.groups_rounded, size: 20, color: p.ink)),
-              ),
+              if (kShowGroups) ...[
+                const SizedBox(width: 8),
+                Press(
+                  onTap: () => Navigator.push(context, MaterialPageRoute<void>(builder: (_) => GroupsScreen(state: s))),
+                  label: 'Groups',
+                  child: Glass(radius: 999, padding: const EdgeInsets.all(9), child: Icon(Icons.groups_rounded, size: 20, color: p.ink)),
+                ),
+              ],
               const SizedBox(width: 8),
               Press(
                 onTap: () => showSettings(context, s),
@@ -265,7 +268,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   padding: const EdgeInsets.all(9),
                   child: Stack(clipBehavior: Clip.none, children: [
                     Icon(Icons.tune_rounded, size: 20, color: p.ink),
-                    if (s.connected)
+                    if (kShowSync && s.connected)
                       Positioned(
                         right: -3,
                         top: -3,
@@ -522,7 +525,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         _assistantBubble(
           p,
           'Salaam! Tell me what you spent, gave or got, in English or Roman Urdu. '
-          'I will keep the record on your phone. You can connect Google Sheets any time from settings.',
+          'I will keep the record on your phone, private to you. You can save a backup file any time from settings.',
         ),
         Wrap(spacing: 8, runSpacing: 8, children: [
           for (final e in _examples)

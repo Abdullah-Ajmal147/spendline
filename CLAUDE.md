@@ -8,7 +8,7 @@ a local database, with optional Firebase sync and a Google Sheet backup.
 
 - The phone is the database: SQLite via `services/store.dart`, loaded into `AppState.entries`. The
   app works with zero setup. Backup = CSV export/restore (`services/csv.dart`) + optional Sheets.
-- Firebase sync (`services/firebase_cloud.dart`) uses Firebase Auth + Firestore over REST with the
+- HIDDEN in the UI (kShowSync=false in config.dart) until tested on a real phone: Firebase sync (`services/firebase_cloud.dart`) uses Firebase Auth + Firestore over REST with the
   Google ID token, so no google-services.json and no native Firebase plugins. Values (Web client ID,
   project ID, Web API key) are pasted in the app (`ui/cloud_setup_screen.dart`, also SETUP_GOOGLE.md).
   Dirty/deleted ids are queued in prefs; pull is "remote wins unless locally dirty". Remote deletions
@@ -27,7 +27,7 @@ a local database, with optional Firebase sync and a Google Sheet backup.
   parser reads `learnedCategories` and `knownPeople` (multi-word names). Both are globals in parser.dart.
 - Voice: `services/voice.dart` (speech_to_text, free on-device recogniser). Default locale ur_PK.
 - Person ledger: `ui/person_screen.dart` (balance, WhatsApp reminder via wa.me, Mark settled).
-- Groups (Splitwise-style): `models/group.dart` (pure balance + debt-simplification logic, tested),
+- HIDDEN in the UI (kShowGroups=false in config.dart): Groups (Splitwise-style): `models/group.dart` (pure balance + debt-simplification logic, tested),
   `services/group_parser.dart` ("ali ne taxi 800 diya", "pizza 1200 with ali"), `ui/groups_screen.dart`,
   `ui/group_screen.dart`. Single-device only: no sync, groups are not in the Google Sheet. Backup is
   a JSON file next to the CSV. Group expenses do not count in the personal "spent" total yet.

@@ -1,41 +1,49 @@
 # Spendline
 
-Chat-style expense tracker for Android, built with Flutter. Type or say what happened and it is filed:
+Type how you spent money in plain words. Spendline turns it into a clean row in your own Google Sheet.
 
-- `lunch 500, chai 120` becomes two entries
-- `mainy 500 rizwan ko dy ha` becomes "Gave Rs 500 to Rizwan"
-- `ali se 1000 liye` becomes "Got Rs 1,000 from Ali"
+| You type | Type | Person | Category | Amount |
+|---|---|---|---|---|
+| Give to rizwan 1000 | Given | Rizwan | Lending | 1000 |
+| pay for lunch 500 | Expense | | Food | 500 |
+| Uber 350 yesterday | Expense, dated yesterday | | Transport | 350 |
+| received 2k from Ali | Received | Ali | Lending | 2000 |
+| rizwan ko 1000 diye | Given | Rizwan | Lending | 1000 |
 
-English and Roman Urdu, offline-first, groups with split balances, optional Firebase sync and a Google Sheet backup.
+Before saving, a preview card shows what was understood, and every field can be edited.
+The home screen shows this month's spending, the last 14 days, and how much each person owes you.
+If you're offline, entries are kept on the phone and sync when you're back online.
 
-| Chat | Roman Urdu | Tools |
-|---|---|---|
-| ![Chat](docs/screenshots/shot-1-chat.png) | ![Roman Urdu](docs/screenshots/shot-2-roman-urdu.png) | ![Tools](docs/screenshots/shot-3-tools.png) |
+## 1. Set up the Google side (once, about 5 minutes)
 
-| Summary | Group split |
-|---|---|
-| ![Summary](docs/screenshots/shot-4-summary.png) | ![Groups](docs/screenshots/shot-5-groups.png) |
+1. Open https://script.google.com and make a new project.
+2. Paste `apps_script/Code.gs` into it.
+3. On the line `const APP_KEY = 'CHANGE-ME';`, replace `CHANGE-ME` with a long phrase only you know.
+4. Click **Deploy → New deployment → Web app**. Set **Execute as** to *Me* and **Who has access** to *Anyone*. Then authorize.
+5. Copy the Web app URL. It ends in `/exec`.
 
-## Features
+Your sheet can stay private. The script runs as you, and it only answers requests that carry your APP_KEY.
 
-- Rule-based parser for English and Roman Urdu: dates (`kal`, `3 din pehle`, `5 oct`), amounts (`2k`, `paanch sau`, `1,00,000`), debts (`milne hain`, `dene hain`)
-- Per-person ledger with WhatsApp reminder
-- Splitwise-style groups: equal or exact splits, simplified "who pays whom"
-- Search and filters; voice input; CSV/JSON backup and restore
-- Optional Backup & sync: Google sign-in, Firebase Firestore, plus a Google Sheet copy
+## 2. Build the app
 
-## Run
+You need Flutter 3.35 or newer.
 
+```bash
+bash scripts/setup_platforms.sh   # creates android/ and ios/ with the right settings
+flutter test                      # parser tests
+flutter run                       # with your phone plugged in
 ```
-flutter pub get
-flutter test
-flutter run
-```
 
-Release signing reads `android/key.properties` (never committed). Without it the release build falls back to the debug key.
+When the app opens:
+1. Paste the `/exec` URL and your APP_KEY.
+2. Paste the link to your Google Sheet. The app adds an **Expenses** tab to it.
 
-## More
+## Smart parsing (optional)
 
-- Privacy policy: https://abdullah-ajmal147.github.io/spendline/
-- Contributor notes: [CLAUDE.md](CLAUDE.md) · Play Store notes: [PLAY_STORE.md](PLAY_STORE.md) · Cloud setup: [SETUP_GOOGLE.md](SETUP_GOOGLE.md)
-- Store graphics: [store/](store/)
+Turn this on in Settings. It downloads Qwen3 0.6B, an open-source model of about 350 MB, and runs it on the phone. It is only used when the built-in parser isn't sure about a sentence, and nothing is sent to any AI service.
+
+It needs Android 11+ on an arm64 phone, or iOS 15+.
+
+## Working on it with Claude Code
+
+Open this folder in a terminal and run `claude`. `CLAUDE.md` describes the structure, the commands, and the first steps to verify the build.

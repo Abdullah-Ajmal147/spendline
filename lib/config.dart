@@ -7,3 +7,8 @@
 const String kGoogleServerClientId = '909930681578-hk125c20e705gc135c54frof1snkeki0.apps.googleusercontent.com';
 const String kFirebaseProjectId = 'spendline-8ea2c';
 const String kFirebaseApiKey = 'AIzaSyCzfVMfzylcsNWczo1Ko0js50O_vYeBx1M';
+
+/// Features that are built but hidden from users until they are ready.
+/// Groups: no invites or sync yet, so friends cannot join. Back up & sync: needs a real-phone test.
+const bool kShowGroups = false;
+const bool kShowSync = false;
